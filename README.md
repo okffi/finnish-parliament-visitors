@@ -22,9 +22,8 @@ Name folders as metnioned below and give as input the directory containing all t
 #### **processImages.sh**  
 ***Run***        :        ./processImages.sh   
 ***Depends On***: ImageMagick -> https://www.imagemagick.org   
-***Exports***    : A folder called 'processed_photos' in each of the above where the images found are color balanced and rotated if they are portraits.    
-                  
- ***Replies***    : Each subfolder has a 'processed_photos' with the results of the processing.
+***Exports***    : A folder called 'processed_photos' in each of the above where the images found are color balanced and rotated if they are portraits.                      
+***Replies***    : Each subfolder has a 'processed_photos' with the results of the processing.
 
  -  If there is an issue with the name of the folder it gets renamed with a trailing '_'
  -  If the photo processed is in portrait it moves it clockwise (270deg arbitrary) it  adds a trailing 'check_' to the name
@@ -40,12 +39,10 @@ Name folders as metnioned below and give as input the directory containing all t
 
  - *Tesseract (3.05+)* with FIN, SWE language packages 
     In short `brew install tesseract` and `brew install tesseract-<langcode>`  
- https://github.com/tesseract-ocr/tesseract/ 
+     https://github.com/tesseract-ocr/tesseract/ 
 
-***Asks for***  : main folder of folders (full path) give the same as the one before!   
-
- ***Replies***    :    
- 
+***Asks for***  : main folder of folders (full path) give the same as the one before!      
+***Replies***    :    
 
  -  If there is no 'processed_photos' folder then it ignores it completely! Make sure the previous script worked..
  -  If the resulting CSV is total gibberish chanch is the file was not in correct reading orientation.. Turn the original photo.
@@ -54,6 +51,12 @@ Name folders as metnioned below and give as input the directory containing all t
 ## Current Data structure   
 
 The above is optimised for the following data structure:
+
+For each date, there are two sets of pages. The first pages describe the people who the reception had been notified were coming (“Ilmoittautuneet”). The latter pages, starting again from the morning hours, list the people who had not been notified (“Ei ilmoittautuneet”). The second set of pages does not list the date. Hence it’s important to maintain the order of photographs and this is why we name them in the folders.
+ 
+There are two separate registers for different buildings. These are filled in different folders, the green and the blue folder. The blue folder is for the temporary use of the Sibelius Academy building, and green folder for the parliament itself.
+ 
+The administration removes certain information from the register before making it viewable. The only way they have described what they remove is by saying, it is for example the people who visit the Ombudsman (Oikeusasiamies).
 
 
 ## Folder Structure
