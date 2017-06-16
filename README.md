@@ -19,21 +19,21 @@ In short
 ## Script Documentation
 Name folders as metnioned below and give as input the directory containing all those you want to process. To repeat process on only some mistaken files, copy them in a temporary 'fixing' folder and run the 2 scripts on that folder.
 
-####**processImages.sh**
-***Run ***        :        ./processImages.sh
-***Depends On ***: ImageMagick -> https://www.imagemagick.org
-***Exports ***    : A folder called 'processed_photos' in each of the above where the images found are color balanced and rotated if they are portraits. 
+#### **processImages.sh**  
+***Run***        :        ./processImages.sh   
+***Depends On***: ImageMagick -> https://www.imagemagick.org   
+***Exports***    : A folder called 'processed_photos' in each of the above where the images found are color balanced and rotated if they are portraits.    
                   
- ***Replies ***    : Each subfolder has a 'processed_photos' with the results of the processing.
+ ***Replies***    : Each subfolder has a 'processed_photos' with the results of the processing.
 
  -  If there is an issue with the name of the folder it gets renamed with a trailing '_'
  -  If the photo processed is in portrait it moves it clockwise (270deg arbitrary) it  adds a trailing 'check_' to the name
  - If the photos are upside down (landscape) you need to turn them manually.
 
 
-####**ocrImages.sh**
- ***Run ***       : ./ocrImages.sh
- ***Depends On*** :
+#### **ocrImages.sh**  
+ ***Run***       : ./ocrImages.sh   
+ ***Depends On*** :   
 
  - *Tabula-Java* 
     A working .jar version is included but make sure you have java 1.7+. https://github.com/tabulapdf/tabula-java/releases
@@ -42,16 +42,16 @@ Name folders as metnioned below and give as input the directory containing all t
     In short `brew install tesseract` and `brew install tesseract-<langcode>`  
  https://github.com/tesseract-ocr/tesseract/ 
 
-***Asks for ***  : main folder of folders (full path) give the same as the one before!
+***Asks for***  : main folder of folders (full path) give the same as the one before!   
 
- ***Replies ***    : 
+ ***Replies***    :    
  
 
  -  If there is no 'processed_photos' folder then it ignores it completely! Make sure the previous script worked..
  -  If the resulting CSV is total gibberish chanch is the file was not in correct reading orientation.. Turn the original photo.
 
 
-## Current Data structure 
+## Current Data structure   
 
 The above is optimised for the following data structure:
 
