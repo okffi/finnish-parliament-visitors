@@ -6,7 +6,8 @@
 
 from __future__ import print_function
 import sys
-import re, csv, datetime
+import re, csv, datetime, os
+import pdb
 
 # print errors
 def eprint(*args, **kwargs):
@@ -62,6 +63,7 @@ def add_index(rows, **kwargs):
 
 # fill in time on rows where it's undefined, check time and date format
 def fill_time(rows, **kwargs):
+  pdb.set_trace()
   dt = datetime.datetime.strptime(kwargs['date'], '%Y-%m-%d')
   # default time
   current_time = dt.strftime('%Y-%m-%d %H:%M')
@@ -117,20 +119,30 @@ def add_header(rows, **kwargs):
   return [header] + rows
 
 
-def process_ocr_output(rows, page_id, date, notified, location_id):
+def get_filename_args(filename):
+  fn = os.path.basename(filename)
+  fn = fn.split('#')
+  location_id = fn[0]
+  date = fn[1]
+  notified = fn[2]
+  page_id = fn[3]
+  return {'location_id': location_id, 'date': date, 'notified': notified, 'page_id': page_id}
+
+def process_ocr_output(rows, **kwargs):
   functions = [remove_empty_lines, remove_header_line, add_card_number,
           add_group_id, add_index, fill_time, fill_host, fill_additional_info,
           add_affiliation, add_contextual_columns, add_header]
   for fn in functions:
-    rows = fn(rows, page_id=page_id, date=date, notified=notified, location_id=location_id)
+    rows = fn(rows, page_id=kwargs['page_id'], date=kwargs['date'], notified=kwargs['notified'], location_id=kwargs['location_id'])
   return rows
 
 # this gets called if you run the script (as opposed to e.g. importing)
 if __name__ == '__main__':
   file = sys.argv[1]
   with open(file, 'rb') as csvfile:
+    args = get_filename_args(csvfile.name)
     rs = csv.reader(csvfile, delimiter=',')
-    rows = process_ocr_output(list(rs), 'page_id', '2015-06-05', 'notified', 'location_id')
+    rows = process_ocr_output(list(rs), page_id=args['page_id'], date=args['date'], notified=args['notified'], location_id=args['location_id'])
   writer = csv.writer(sys.stdout)
   for row in rows:
     writer.writerow(row)
