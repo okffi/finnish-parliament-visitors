@@ -7,7 +7,6 @@
 from __future__ import print_function
 import sys
 import re, csv, datetime, os
-import pdb
 
 # print errors
 def eprint(*args, **kwargs):
@@ -63,7 +62,7 @@ def add_index(rows, **kwargs):
 
 # fill in time on rows where it's undefined, check time and date format
 def fill_time(rows, **kwargs):
-  # pdb.set_trace()
+
   dt = datetime.datetime.strptime(kwargs['date'], '%Y-%m-%d')
   # default time
   current_time = dt.strftime('%Y-%m-%d %H:%M')
