@@ -11,10 +11,10 @@ import pdb
 
 #def check_number_of_columns(rows, **kwargs):
 def check_number_of_columns(rows):
-  if(len(rows[0]) == 4):
-    return True
-  else:
-    return False
+  for row in rows:
+    if(len(row) != 5):
+      return False
+  return True
 
 
 #def get_filename_args(filename):
