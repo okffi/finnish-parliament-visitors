@@ -35,6 +35,8 @@
       echo "$PHOTOGRAPH_DATE$alphanum"
     }
 
+    shopt -s extglob
+
     echo Which folder \do you want to process?
     read parentFolder
     cd $parentFolder
@@ -42,8 +44,7 @@
     # parentFolder=$PWD
     echo $parentFolder
 
-    page_id=1
-    dir_id=1
+    page_id=0
 
     # run this for every folder
     for d in */; do
@@ -78,7 +79,8 @@
         else
             mkdir -p processed_photos
 
-            for img in *.jpg *.JPG ; do
+            for img in *.+(jpg|JPG) ; do
+                echo $img
                 identify=$(identify "$img")
                 [[ $identify =~ ([0-9]+)x([0-9]+) ]] || \
                     { echo Cannot get size >&2 ; continue ; }
@@ -87,7 +89,7 @@
 
                 # Generate new name for the image file
                 fn_page_id=`get_page_id $page_id`
-                rr="${Date}#${BuildingRegister}#${HadBeenExpected}#$dir_id-$page_id.jpg"
+                rr="${Date}#${BuildingRegister}#${HadBeenExpected}#$fn_page_id.jpg"
                 echo $rr
                 page_id=$((page_id+1))
 
@@ -112,6 +114,5 @@
         fi
 
         cd $parentFolder
-        dir_id=$((dir_id+1))
     done
     # IMAGE PROCESSING FINISHED NOW TO OCR STUFF

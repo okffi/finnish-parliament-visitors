@@ -21,8 +21,9 @@ def remove_empty_lines(rows, **kwargs):
 
 # remove the header line that is printed on photographed pages
 def remove_header_line(rows, **kwargs):
-  if 'VIERAILIJAN NIMI' in rows[0][1]: del rows[0]
-  return rows
+#  if 'VIERAILIJAN NIMI' in rows[0][1]: del rows[0]
+#  return rows
+  return [row for row in rows if not 'VERAILIJAN NIMI' in row[1]]
 
 # in beginning, string with name actually starts with card number - this column
 # to be split
