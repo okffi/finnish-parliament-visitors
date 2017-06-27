@@ -63,7 +63,7 @@ The administration removes certain information from the register before making i
  
  These 2 scripts runs through all folders that have the following structure
 
-           BuildingRegister#date#HadBeenExpected
+           BuildingRegister#date#Notified
 
 *BuildingRegister* :   
 There are two separate registers for different buildings
@@ -72,5 +72,15 @@ There are two separate registers for different buildings
 *Date*:   
 Date of the page register. This is hard to retrieve from individual pages (YYYY-MM-DD) and therefore has to be inputed in the folder as an extra metadata.
 
- *HadBeenExpected* :  
+ *Notified* :  
 Register of people who had notified were coming “Ilmoittautuneet" (e) and register of people who had not notified “Ei ilmoittautuneet” (ne).
+
+
+## Results
+
+The final output is a folder named CSV containing all the exported csvs. This will be created at the root of the folders. Each csv is named:
+
+      Date#BuildingRegister#Notified#photo-id.csv
+ 
+      2017-05-26#g#e#IMG_20170602_120608.jpg.csv
+
