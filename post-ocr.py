@@ -63,7 +63,7 @@ def add_index(rows, **kwargs):
 
 # fill in time on rows where it's undefined, check time and date format
 def fill_time(rows, **kwargs):
-  pdb.set_trace()
+  # pdb.set_trace()
   dt = datetime.datetime.strptime(kwargs['date'], '%Y-%m-%d')
   # default time
   current_time = dt.strftime('%Y-%m-%d %H:%M')
@@ -122,8 +122,8 @@ def add_header(rows, **kwargs):
 def get_filename_args(filename):
   fn = os.path.basename(filename)
   fn = fn.split('#')
-  location_id = fn[0]
-  date = fn[1]
+  date = fn[0]
+  location_id = fn[1]
   notified = fn[2]
   page_id = fn[3]
   return {'location_id': location_id, 'date': date, 'notified': notified, 'page_id': page_id}
@@ -143,6 +143,8 @@ if __name__ == '__main__':
     args = get_filename_args(csvfile.name)
     rs = csv.reader(csvfile, delimiter=',')
     rows = process_ocr_output(list(rs), page_id=args['page_id'], date=args['date'], notified=args['notified'], location_id=args['location_id'])
-  writer = csv.writer(sys.stdout)
-  for row in rows:
-    writer.writerow(row)
+  with open('csv.csv', 'a') as f:
+   writer = csv.writer(f)
+   # writer = csv.writer('sys.stdout')
+   for row in rows:
+     writer.writerow(row)

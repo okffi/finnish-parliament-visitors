@@ -33,6 +33,9 @@
     # parentFolder=$PWD
     echo $parentFolder
 
+    page_id=1
+    dir_id=1
+
     # run this for every folder
     for d in */; do
 
@@ -74,8 +77,9 @@
                 height=${BASH_REMATCH[2]}
 
                 # Generate new name for the image file
-                rr="${Date}#${BuildingRegister}#${HadBeenExpected}#$img"
+                rr="${Date}#${BuildingRegister}#${HadBeenExpected}#$dir_id-$page_id.jpg"
                 echo $rr
+                page_id=$((page_id+1))
 
                 # Convert the quality so deep shadows leave
                 convert $img \
@@ -97,6 +101,7 @@
             done
         fi
 
-        # IMAGE PROCESSING FINISHED NOW TO OCR STUFF
         cd $parentFolder
+        dir_id=$((dir_id+1))
     done
+    # IMAGE PROCESSING FINISHED NOW TO OCR STUFF
