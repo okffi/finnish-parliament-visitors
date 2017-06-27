@@ -7,6 +7,7 @@
 from __future__ import print_function
 import sys
 import re, csv, datetime, os
+import pdb
 
 # print errors
 def eprint(*args, **kwargs):
@@ -23,7 +24,8 @@ def remove_empty_lines(rows, **kwargs):
 def remove_header_line(rows, **kwargs):
 #  if 'VIERAILIJAN NIMI' in rows[0][1]: del rows[0]
 #  return rows
-  return [row for row in rows if not 'VERAILIJAN NIMI' in row[1]]
+  return [row for row in rows if not 'VIERAILIJAN NIMI' in row[1]]
+
 
 # in beginning, string with name actually starts with card number - this column
 # to be split
@@ -61,9 +63,29 @@ def add_index(rows, **kwargs):
     index += 1
   return rows
 
+# time is often garbled, let's try to convert it into standard format HH:MM
+def fix_time(rows, **kwargs):
+  for row in rows:
+    orig_time = row[1]
+    hour = ''
+    if row[1]:
+      st = re.search('(\d{1,2})[^\d](\d{2})', row[1])
+      if st:
+        hour = st.group(1)
+        minute = st.group(2)
+      if re.search('\d{4}', row[1]):
+        hour = row[1][:2]
+        minute = row[1][2:4]
+      elif re.search('\d{3}', row[1]):
+        hour = row[1][:1]
+        minute = row[1][1:3]
+    if hour:
+      row[1] = hour+':'+minute
+    row.append(orig_time)
+  return rows
+
 # fill in time on rows where it's undefined, check time and date format
 def fill_time(rows, **kwargs):
-
   dt = datetime.datetime.strptime(kwargs['date'], '%Y-%m-%d')
   # default time
   current_time = dt.strftime('%Y-%m-%d %H:%M')
@@ -115,7 +137,7 @@ def add_contextual_columns(rows, **kwargs):
   return rows
 
 def add_header(rows, **kwargs):
-  header = ['id','time','visitor name','host name','additional information','card number','group id','affiliation','notified','location id','page id']
+  header = ['id','time','visitor name','host name','additional information','card number','group id','original time','affiliation','notified','location id','page id']
   return [header] + rows
 
 
@@ -130,7 +152,7 @@ def get_filename_args(filename):
 
 def process_ocr_output(rows, **kwargs):
   functions = [remove_empty_lines, remove_header_line, add_card_number,
-          add_group_id, add_index, fill_time, fill_host, fill_additional_info,
+          add_group_id, add_index, fix_time, fill_time, fill_host, fill_additional_info,
           add_affiliation, add_contextual_columns, add_header]
   for fn in functions:
     rows = fn(rows, page_id=kwargs['page_id'], date=kwargs['date'], notified=kwargs['notified'], location_id=kwargs['location_id'])
@@ -143,8 +165,8 @@ if __name__ == '__main__':
     args = get_filename_args(csvfile.name)
     rs = csv.reader(csvfile, delimiter=',')
     rows = process_ocr_output(list(rs), page_id=args['page_id'], date=args['date'], notified=args['notified'], location_id=args['location_id'])
-  with open('csv.csv', 'a') as f:
-   writer = csv.writer(f)
-   # writer = csv.writer('sys.stdout')
-   for row in rows:
-     writer.writerow(row)
+#  with open('csv.csv', 'a') as f:
+#   writer = csv.writer(f)
+  writer = csv.writer(sys.stdout)
+  for row in rows:
+    writer.writerow(row)
