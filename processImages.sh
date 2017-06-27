@@ -94,7 +94,7 @@
                 page_id=$((page_id+1))
 
                 # Convert the quality so deep shadows leave
-                convert $img \
+                convert "$img" \
                      \( +clone -blur 0x20 \) \
                      -compose Divide_Src -composite $rr
 
