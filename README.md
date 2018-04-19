@@ -1,5 +1,5 @@
 # lobbyist-register
-Finnish Parliament visitor register
+Finnish Parliament Visitor Logs
 
 ## Description
 
@@ -16,11 +16,12 @@ In short
 (3) Tabula ( for PDF to csv )
 
 
+
 ## Script Documentation
 Name folders as metnioned below and give as input the directory containing all those you want to process. To repeat process on only some mistaken files, copy them in a temporary 'fixing' folder and run the 2 scripts on that folder.
 
 #### **processImages.sh**  
-***Run***        :        ./processImages.sh   
+***Run***        :  bash 1.processImages.sh   
 ***Depends On***: ImageMagick -> https://www.imagemagick.org   
 ***Exports***    : A folder called 'processed_photos' in each of the above where the images found are color balanced and rotated if they are portraits.                      
 ***Replies***    : Each subfolder has a 'processed_photos' with the results of the processing.
@@ -31,7 +32,7 @@ Name folders as metnioned below and give as input the directory containing all t
 
 
 #### **ocrImages.sh**  
- ***Run***       : ./ocrImages.sh   
+ ***Run***       : bash 2.ocrImages.sh   
  ***Depends On*** :   
 
  - *Tabula-Java* 
@@ -46,6 +47,42 @@ Name folders as metnioned below and give as input the directory containing all t
 
  -  If there is no 'processed_photos' folder then it ignores it completely! Make sure the previous script worked..
  -  If the resulting CSV is total gibberish chanch is the file was not in correct reading orientation.. Turn the original photo.
+
+#### **3.collate_csv.sh**  
+
+ ***Run***       : bash 3.collate_csv.sh   
+ ***Depends On*** :   
+
+***Asks for***  : main folder of folders (full path) give the same as the one before!      
+***Replies***    :  
+ -  Runs through and collects all the individual csv files and puts them all together in a compiled csv file with individual ID for each row 
+
+#### **4.test_all.sh**  
+
+ ***Run***       : bash 4.test_all.sh   
+ ***Depends On*** :   
+
+***Asks for***  : main folder of folders (full path) give the same as the one before!      
+***Replies***   :  
+ - Runs a check of what the python file will fail to process. Gives an error message that needs to be handled manually
+ - It will tell you the name of the csv file and the now nearby to look for. Yeah manual processing...
+
+
+#### **5.post_ocr_all.sh**  
+
+ ***Run***       : bash 5.post_ocr_all.sh   
+ ***Depends On*** :   
+
+***Asks for***  : main folder of folders (full path) give the same as the one before!      
+***Replies***   :  
+ - Runs the python file to correct basic structure and add full ID so that the row and original photograph where it was found are still searchable.
+ 
+
+
+## Contact
+
+(https://github.com/FourCoffees)
+(https://github.com/AleksiKnuutila)
 
 
 ## Current Data structure   
@@ -83,4 +120,5 @@ The final output is a folder named CSV containing all the exported csvs. This wi
       Date#BuildingRegister#Notified#photo-id.csv
  
       2017-05-26#g#e#IMG_20170602_120608.jpg.csv
+
 

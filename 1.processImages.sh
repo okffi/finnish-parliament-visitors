@@ -28,11 +28,11 @@
 
 # Set this to be different for every run of photographs. This will affect the IDs assigned to pages.
 # By setting a different base for IDs, there are no collisions between the IDs.
-    PHOTOGRAPH_DATE='2706'
+    PHOTOGRAPH_DATE='DATE'
 
     function get_page_id {
       alphanum=`echo "$1" | tr 0123456789 abcdefghij`
-      echo "$PHOTOGRAPH_DATE$alphanum"
+      echo "$PHOTOGRAPH_DATE$page_param$alphanum"
     }
 
     shopt -s extglob
@@ -41,10 +41,13 @@
     read parentFolder
     cd $parentFolder
 
+    echo Initial ID?
+    read page_param
+
     # parentFolder=$PWD
     echo $parentFolder
 
-    page_id=0
+    # page_id=page_id
 
     # run this for every folder
     for d in */; do
@@ -79,8 +82,11 @@
         else
             mkdir -p processed_photos
 
+            # IMAGE PROCESSING MODULE: 
             for img in *.+(jpg|JPG) ; do
                 echo $img
+
+                # Read its width and height
                 identify=$(identify "$img")
                 [[ $identify =~ ([0-9]+)x([0-9]+) ]] || \
                     { echo Cannot get size >&2 ; continue ; }
@@ -94,11 +100,15 @@
                 page_id=$((page_id+1))
 
                 # Convert the quality so deep shadows leave
+                # Do this by blurring a lot until the letters are illegible and then divide the orignal with the outcome
+                # the result will make the background closer to white!
+                # Uses ImageMagick
+                # https://www.imagemagick.org/Usage/compose/#divide 
                 convert "$img" \
                      \( +clone -blur 0x20 \) \
                      -compose Divide_Src -composite $rr
 
-                # move it to new folder
+                # Move it to new folder named 'processed_photos'
                 mv -f -i "$parentFolder/$d/$rr" "$parentFolder/$d/processed_photos/"
 
                 # Check if it needs to be rotated
