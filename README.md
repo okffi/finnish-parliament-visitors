@@ -1,4 +1,4 @@
-# lobbyist-register
+# Visitor Logs
 Finnish Parliament Visitor Logs
 
 ## Description
